@@ -1,0 +1,677 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', 'SimHei', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100dvh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    height: calc(100dvh - 40px);
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    /* fill the viewport and let inner panels scroll, not the page */
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 22px;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+header h1 {
+    font-size: 1.35em;
+    line-height: 1.2;
+}
+
+.main-content {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* 左侧边栏 */
+.sidebar {
+    width: 260px;
+    background: #f8f9fa;
+    border-right: 2px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.sidebar-section-title {
+    padding: 12px 15px 6px;
+    color: #667eea;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.pathway-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 10px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.pathway-menu {
+    padding-bottom: 12px;
+}
+
+.pathway-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.pathway-btn {
+    min-height: 48px;
+}
+
+.pathway-btn:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+    color: #333;
+}
+
+.pathway-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.pathway-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.pathway-range {
+    flex-shrink: 0;
+    min-width: 42px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: #eef1ff;
+    color: #667eea;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pathway-btn.active .pathway-range {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.sidebar-summary {
+    padding: 12px 15px;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* 右侧学习区 */
+.learning-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    min-height: 0;
+    overflow: hidden;
+    gap: 16px;
+}
+
+.character-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 18px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    /* 文字展示(左) + 释义/例句(右) 同一行，纵向更紧凑 */
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.character-display {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.main-character {
+    font-size: 120px;
+    font-weight: bold;
+    color: #667eea;
+    flex-shrink: 0;
+}
+
+.character-info {
+    flex: 1;
+}
+
+.pinyin {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.stroke-count {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 8px;
+    color: #667eea;
+}
+
+.play-btn {
+    padding: 10px 20px;
+    background: #764ba2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+    background: #667eea;
+    transform: translateY(-2px);
+}
+
+.play-btn:active {
+    transform: translateY(0);
+}
+
+.character-details {
+    flex: 1 1 240px;
+    min-width: 0;
+    margin: 0;
+    padding-left: 24px;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.meaning, .example {
+    margin-bottom: 8px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.example:last-child {
+    margin-bottom: 0;
+}
+
+/* 笔画顺序练习区 */
+.practice-area {
+    padding: 0;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.practice-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.practice-area h2 {
+    flex-shrink: 0;
+    color: #333;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.canvas-container {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(360px, 1.1fr);
+    gap: 10px;
+}
+
+.stroke-order-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    min-height: 0;
+    overflow: hidden;
+    padding: 18px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background: white;
+}
+
+.stroke-order-title {
+    color: #667eea;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+.stroke-order-count {
+    color: #555;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.stroke-order-count span {
+    color: #667eea;
+}
+
+.stroke-order-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 440px;
+    overflow-y: auto;
+    padding: 2px;
+}
+
+.stroke-order-step {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 5px;
+    border: 1px solid #d8defa;
+    background: #fbfcff;
+}
+
+.stroke-order-step svg {
+    width: 86%;
+    height: 86%;
+}
+
+.stroke-order-step path {
+    fill: #222;
+}
+
+.stroke-order-step .previous-stroke {
+    fill: #c4cad8;
+}
+
+.stroke-order-step .current-stroke {
+    fill: #3f51c6;
+}
+
+.stroke-order-number {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.stroke-order-step.fallback {
+    background: #f0f2ff;
+    color: #3f51c6;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.stroke-order-steps.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    color: #667eea;
+    font-weight: 600;
+}
+
+#practiceCanvas {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    cursor: crosshair;
+    touch-action: none; /* draw without scrolling the page on iPad */
+}
+
+.practice-tools {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    min-width: 0;
+}
+
+.brush-settings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: #f5f5f5;
+}
+
+.brush-settings label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#brushColor {
+    width: 34px;
+    height: 32px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#brushSize {
+    width: 88px;
+    cursor: pointer;
+}
+
+#sizeDisplay {
+    font-weight: 600;
+    color: #667eea;
+    min-width: 30px;
+}
+
+.practice-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+
+.control-btn {
+    min-height: 36px;
+    padding: 7px 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
+}
+
+.control-btn.danger {
+    background: #ff6b6b;
+}
+
+.control-btn.danger:hover {
+    background: #ff5252;
+}
+
+/* 导航 */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.nav-btn {
+    min-height: 32px;
+    padding: 5px 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: #764ba2;
+}
+
+.character-counter {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 13px;
+}
+
+/* 响应式设计 — 与 Math 一致：
+   ≥1001px(含 iPad 横版) 保持两栏并铺满视口；1000 以下纵向堆叠并整页滚动 */
+
+/* 中等宽度(含 iPad 横版)：压缩大字与面板比例，确保一屏完整显示 */
+@media (max-width: 1280px) {
+    .character-card {
+        padding: 16px;
+    }
+
+    .main-character {
+        font-size: 86px;
+    }
+
+    .canvas-container {
+        grid-template-columns: minmax(220px, 0.85fr) minmax(300px, 1.15fr);
+    }
+
+    .stroke-order-steps {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+}
+
+/* 纵向堆叠：恢复整页滚动 */
+@media (max-width: 1000px) {
+    .container {
+        height: auto;
+        min-height: calc(100dvh - 40px);
+        overflow: visible;
+    }
+
+    .main-content {
+        flex-direction: column;
+        overflow: visible;
+        flex: 0 0 auto;
+        min-height: 0;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #e0e0e0;
+        overflow: visible;
+    }
+
+    .pathway-menu {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 0 12px 10px;
+    }
+
+    .learning-area {
+        padding: 16px;
+        gap: 14px;
+        overflow: visible;
+    }
+
+    /* 堆叠时字卡恢复上下排列，释义放回字符下方 */
+    .character-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .character-details {
+        padding-left: 0;
+        padding-top: 14px;
+        border-left: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .main-character {
+        font-size: 84px;
+    }
+
+    .canvas-container {
+        grid-template-columns: 1fr;
+    }
+
+    .stroke-order-panel,
+    #practiceCanvas {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+    }
+
+    .container {
+        min-height: 100dvh;
+        border-radius: 0;
+    }
+
+    header h1 {
+        font-size: 1.1em;
+    }
+
+    .pathway-menu {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .character-display,
+    .navigation {
+        align-items: stretch;
+    }
+
+    .character-display {
+        flex-direction: column;
+    }
+
+    .main-character {
+        font-size: 60px;
+    }
+
+    .brush-settings {
+        flex-wrap: wrap;
+    }
+
+    .practice-header {
+        flex-wrap: wrap;
+    }
+
+    .practice-tools {
+        width: 100%;
+    }
+
+    .practice-buttons {
+        margin-left: auto;
+    }
+}
+
+/* iPad / 触屏设备：去掉外边距与圆角，铺满整个屏幕 */
+@media (hover: none) and (pointer: coarse) {
+    body {
+        padding: 0;
+    }
+
+    .container {
+        max-width: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) and (min-width: 1001px) {
+    .container {
+        height: 100dvh;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 1000px) {
+    .container {
+        height: auto;
+        min-height: 100dvh;
+    }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}

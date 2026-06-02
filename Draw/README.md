@@ -4,21 +4,20 @@ A simple, lightweight HTML5 canvas-based drawing application that can be hosted 
 
 ## Features
 
-- **Draw freely** with your mouse or touch on any device
-- **Color picker** to choose any color
-- **Adjustable brush size** (1-50px)
-- **Clear canvas** button to start over
-- **Download** your drawings as PNG files
-- **Responsive design** that works on desktop and mobile
+- **Draw freely** with your mouse, touch, or stylus on any device
+- **14 brushes** as a single-column icon toolbar on the left, including artistic media:
+  pen, pencil, **sketch**, **charcoal**, marker, **crayon**, **oil paint**, **watercolor**,
+  calligraphy, spray, neon, rainbow, dashed, and eraser — each with its own texture
+- **Color picker** swatch and an **adjustable brush size** (the value pops up only while you drag)
+- **Clear** 🗑️ and **Download** ⬇️ as icon buttons in the top-right
+- Shares the look of the Math / Han apps: slim purple header, fills the viewport, and goes **edge-to-edge full screen on iPad**
 
 ## How to Use
 
 1. Open `index.html` in your web browser
-2. Select a color using the color picker
-3. Adjust the brush size using the slider
-4. Click and drag on the canvas to draw
-5. Use "Clear Canvas" to erase everything
-6. Use "Download Drawing" to save your artwork
+2. Pick a brush from the left toolbar, choose a color, and set the size
+3. Click / drag (or draw with a finger or stylus) on the canvas
+4. Use 🗑️ (top-right) to clear, ⬇️ to download your artwork as a PNG
 
 ## Hosting on GitHub Pages
 

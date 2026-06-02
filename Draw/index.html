@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Draw</h1>
+            <!-- Clear / Download as icons, top-right -->
+            <div class="header-tools">
+                <button id="clearBtn" class="tool-btn" title="Clear canvas">🗑️</button>
+                <button id="downloadBtn" class="tool-btn" title="Download drawing">⬇️</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Left: single vertical column of brush icons -->
+            <div class="sidebar">
+                <div class="brush-grid" id="brushGrid">
+                    <!-- brush icon buttons generated in script.js -->
+                </div>
+            </div>
+
+            <!-- Right: drawing canvas fills the area -->
+            <div class="canvas-area">
+                <canvas id="drawingCanvas"></canvas>
+
+                <!-- Floating, draggable tools — default bottom-right inside the canvas.
+                     left = eraser + color (stacked), right = vertical size bar -->
+                <div class="float-tools" id="floatTools">
+                    <div class="float-handle" title="Drag me">⠿</div>
+                    <div class="float-left">
+                        <button id="eraserBtn" class="float-btn" title="Eraser">🧽</button>
+                        <input type="color" id="colorPicker" value="#000000" title="Brush color">
+                    </div>
+                    <div class="size-row">
+                        <input type="range" id="brushSize" min="1" max="50" value="5" title="Brush size">
+                        <span id="sizeDisplay">5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

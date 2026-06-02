@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice - 100 Questions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Math Practice</h1>
+        </header>
+
+        <!-- Statistics -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="label">Question:</span>
+                <span class="value" id="currentQuestion">1</span> / <span class="value">100</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Score:</span>
+                <span class="value" id="score">0</span> / <span class="value">100</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Accuracy:</span>
+                <span class="value" id="accuracy">0%</span>
+            </div>
+            <button id="resetBtn" class="reset-btn">🔄 Restart</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Sidebar: Answer Record (left, 4 x 25 grid) -->
+            <div class="sidebar">
+                <h3>Record</h3>
+                <div class="record-list" id="recordList">
+                    <!-- Answer records will be dynamically generated -->
+                </div>
+                <div class="record-legend">
+                    <span><i class="dot correct"></i> Correct</span>
+                    <span><i class="dot incorrect"></i> Wrong</span>
+                    <span><i class="dot pending"></i> Unanswered</span>
+                </div>
+            </div>
+
+            <!-- Right column: question bar on top, scratchpad below -->
+            <div class="work-column">
+                <!-- Questions Area (horizontal bar) -->
+                <div class="question-area">
+                    <div class="question-card">
+                        <div class="question-number">Q<span id="questionNum">1</span></div>
+                        <div class="question-text" id="questionText">
+                            <!-- Questions will be dynamically generated -->
+                        </div>
+
+                        <div class="answer-section">
+                            <input type="number" id="answerInput" placeholder="Answer" autocomplete="off">
+                            <button id="submitBtn" class="submit-btn">Submit</button>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="navigation-buttons">
+                            <button id="prevBtn" class="nav-btn" disabled>← Prev</button>
+                            <button id="nextBtn" class="nav-btn">Next →</button>
+                        </div>
+
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                </div>
+
+                <!-- Scratchpad: handwritten working-out -->
+                <div class="scratch-area">
+                    <div class="scratch-header">
+                        <h3>Scratchpad</h3>
+                        <div class="scratch-tools">
+                            <button id="penBtn" class="tool-btn active" title="Pen">✏️</button>
+                            <button id="eraserBtn" class="tool-btn" title="Eraser">🧽</button>
+                            <button id="clearCanvasBtn" class="tool-btn" title="Clear">🗑️</button>
+                        </div>
+                    </div>
+                    <canvas id="scratchCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion Screen -->
+        <div class="completion-overlay" id="completionOverlay" style="display: none;">
+            <div class="completion-card">
+                <h2>🎉 All Questions Complete!</h2>
+                <div class="final-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Score:</span>
+                        <span class="stat-value" id="finalScore">0</span> / 100
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Accuracy:</span>
+                        <span class="stat-value" id="finalAccuracy">0%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Grade:</span>
+                        <span class="stat-value grade" id="finalGrade">Excellent</span>
+                    </div>
+                </div>
+                <button id="restartBtn" class="restart-btn">Start New Round</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese Characters Learning - Stroke Order Practice</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chinese Writing</h1>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧：汉字选择 -->
+            <div class="sidebar">
+                <div class="sidebar-section-title">Pathway</div>
+                <div class="pathway-menu" id="pathwayMenu">
+                    <!-- 学习路径将动态生成 -->
+                </div>
+                
+                <div class="sidebar-summary" id="sidebarSummary">
+                    1000 characters
+                </div>
+            </div>
+
+            <!-- 右侧：学习区 -->
+            <div class="learning-area">
+                <!-- 汉字详情卡 -->
+                <div class="character-card">
+                    <div class="character-display">
+                        <div class="main-character" id="mainCharacter">汉</div>
+                        <div class="character-info">
+                            <div class="pinyin">
+                                <span class="label">Pinyin:</span>
+                                <span id="pinyinDisplay">hàn</span>
+                            </div>
+                            <div class="stroke-count">
+                                <span class="label">Strokes:</span>
+                                <span id="strokeCount">13</span>
+                            </div>
+                            <button class="play-btn" id="playSound" title="Click to hear pronunciation">
+                                🔊 Pronounce
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="character-details">
+                        <div class="meaning">
+                            <span class="label">Meaning:</span>
+                            <span id="meaning">China; Han (ethnic group)</span>
+                        </div>
+                        <div class="example">
+                            <span class="label">Example:</span>
+                            <span id="example">China is an ancient civilization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 笔画顺序练习区 -->
+                <div class="practice-area">
+                    <div class="practice-header">
+                        <h2>📝 Stroke Order Practice</h2>
+                        <div class="practice-tools">
+                            <div class="brush-settings">
+                                <label for="brushColor">Brush</label>
+                                <input type="color" id="brushColor" value="#000000">
+                                
+                                <label for="brushSize">Size</label>
+                                <input type="range" id="brushSize" min="1" max="40" value="8">
+                                <span id="sizeDisplay">8</span>px
+                            </div>
+                            <div class="practice-buttons">
+                                <button id="undoBtn" class="control-btn">↶ Undo</button>
+                                <button id="clearBtn" class="control-btn danger">🗑️ Clear</button>
+                                <button id="showHintBtn" class="control-btn">👁️ Hint</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canvas-container">
+                        <div class="stroke-order-panel">
+                            <div class="stroke-order-title">Stroke Order</div>
+                            <div class="stroke-order-count">
+                                Follow <span id="orderStrokeCount">13</span> strokes in order
+                            </div>
+                            <div class="stroke-order-steps" id="strokeOrderSteps"></div>
+                        </div>
+                        <canvas id="practiceCanvas"></canvas>
+                    </div>
+
+                </div>
+
+                <!-- 导航 -->
+                <div class="navigation">
+                    <button id="prevBtn" class="nav-btn">← Previous</button>
+                    <span class="character-counter" id="counter">1 / 20</span>
+                    <button id="nextBtn" class="nav-btn">Next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', 'SimHei', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100dvh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    height: calc(100dvh - 40px);
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    /* fill the viewport and let inner panels scroll, not the page */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 顶部细条 header（与 Math/Han 一致），右上角放 Clear / Download 图标 */
+header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 8px 18px;
+}
+
+header h1 {
+    font-size: 1.25em;
+    line-height: 1.2;
+}
+
+.header-tools {
+    display: flex;
+    gap: 8px;
+}
+
+.header-tools .tool-btn {
+    width: 40px;
+    height: 34px;
+    font-size: 17px;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-tools .tool-btn:hover {
+    background: rgba(255, 255, 255, 0.32);
+    transform: translateY(-1px);
+}
+
+/* 主区：左侧工具栏 + 右侧画布 */
+.main-content {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* 左侧工具栏：单列图标，精简 */
+.sidebar {
+    width: 76px;
+    flex-shrink: 0;
+    background: #f8f9fa;
+    border-right: 2px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 10px;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.brush-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.brush-btn {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    line-height: 1;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.brush-btn:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.brush-btn.active {
+    border-color: #667eea;
+    background: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.35);
+}
+
+/* 悬浮可拖动工具栏：竖版，颜色 + 笔粗 + 橡皮，默认出现在右下角。
+   抓住面板边框（除控件外的任意处）即可拖动。 */
+.float-tools {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 50;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    cursor: grab;
+    touch-action: none;
+}
+
+/* 左侧抓握点（仅提示，整个面板边框都能拖） */
+.float-handle {
+    color: #b6bcc8;
+    font-size: 15px;
+    line-height: 1;
+    padding: 2px;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* 左边：橡皮擦 + 颜色（上下叠放） */
+.float-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.float-tools.dragging,
+.float-tools.dragging .float-handle {
+    cursor: grabbing;
+}
+
+.float-btn {
+    width: 38px;
+    height: 34px;
+    font-size: 18px;
+    line-height: 1;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.float-btn:hover {
+    border-color: #667eea;
+}
+
+.float-btn.active {
+    border-color: #667eea;
+    background: #667eea;
+}
+
+#colorPicker {
+    width: 38px;
+    height: 34px;
+    padding: 0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+}
+
+/* 右边：尺寸调节，竖向音量条（最小在下） */
+.size-row {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+}
+
+#brushSize {
+    -webkit-appearance: slider-vertical;
+    appearance: slider-vertical;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 22px;
+    height: 76px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+/* 数字只在拖动滑块时浮现，悬浮在滑块上方 */
+#sizeDisplay {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    padding: 1px 8px;
+    background: #667eea;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 10px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 5;
+}
+
+#sizeDisplay.show {
+    opacity: 1;
+}
+
+/* 右侧画布区 */
+.canvas-area {
+    position: relative; /* 悬浮工具栏以画布区为定位基准 */
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    padding: 14px;
+    display: flex;
+}
+
+#drawingCanvas {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+    cursor: crosshair;
+    touch-action: none; /* draw without scrolling the page on iPad */
+}
+
+/* 窄屏：工具栏移到顶部横排，画布在下，整页滚动 */
+@media (max-width: 1000px) {
+    .container {
+        height: auto;
+        min-height: calc(100dvh - 40px);
+        overflow: visible;
+    }
+
+    .main-content {
+        flex-direction: column;
+        overflow: visible;
+        flex: 0 0 auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        border-right: none;
+        border-bottom: 2px solid #e0e0e0;
+        overflow: visible;
+    }
+
+    .brush-grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: auto;
+    }
+
+    .brush-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .canvas-area {
+        min-height: 60vh;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+    }
+
+    .container {
+        min-height: 100dvh;
+        border-radius: 0;
+    }
+}
+
+/* iPad / 触屏设备：去掉外边距与圆角，铺满整个屏幕 */
+@media (hover: none) and (pointer: coarse) {
+    body {
+        padding: 0;
+    }
+
+    .container {
+        max-width: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) and (min-width: 1001px) {
+    .container {
+        height: 100dvh;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 1000px) {
+    .container {
+        height: auto;
+        min-height: 100dvh;
+    }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
