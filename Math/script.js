@@ -176,11 +176,8 @@ class MathQuiz {
     updateStats() {
         const score = this.correct.filter(c => c).length;
         const answered = this.answers.filter(a => a !== null).length;
-        const accuracy = answered === 0 ? 0 : Math.round(score / answered * 100);
 
-        document.getElementById('currentQuestion').textContent = this.currentIndex + 1;
         document.getElementById('score').textContent = score;
-        document.getElementById('accuracy').textContent = accuracy + '%';
 
         // Update progress bar
         const progress = (answered / QUESTION_COUNT) * 100;

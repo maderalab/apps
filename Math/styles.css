@@ -25,68 +25,61 @@ body {
 }
 
 header,
-.stats-bar,
 .progress-container {
     flex-shrink: 0;
 }
 
 header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 10px 22px;
-    text-align: left;
+    padding: 8px 18px;
 }
 
 header h1 {
-    font-size: 1.35em;
+    font-size: 1.25em;
     line-height: 1.2;
 }
 
-/* 统计栏 */
-.stats-bar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: #f8f9fa;
-    padding: 8px 14px;
-    border-bottom: 1px solid #e0e0e0;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.stat-item {
+/* Score + Restart in the top-right */
+.header-stats {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
+    gap: 12px;
 }
 
-.stat-item .label {
-    color: #666;
-}
-
-.stat-item .value {
-    color: #667eea;
+.hscore {
     font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    white-space: nowrap;
+}
+
+.hscore b {
+    font-size: 16px;
+    color: #fff;
 }
 
 .reset-btn {
     min-height: 32px;
     padding: 5px 12px;
-    background: #ff6b6b;
+    background: rgba(255, 255, 255, 0.18);
     color: white;
-    border: none;
-    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 8px;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    white-space: nowrap;
+    transition: all 0.2s ease;
 }
 
 .reset-btn:hover {
-    background: #ff5252;
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
 }
 
 /* 进度条 */
@@ -377,29 +370,24 @@ header h1 {
 
 /* 手写演算区：放在题目下方，撑满剩余高度 */
 .scratch-area {
+    position: relative;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     background: #f8f9fa;
     border-radius: 10px;
-    padding: 16px;
+    padding: 12px;
     min-height: 0;
 }
 
-.scratch-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.scratch-header h3 {
-    color: #333;
-    font-size: 18px;
-}
-
+/* 工具栏浮在右下角，竖直排列 */
 .scratch-tools {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 5;
     display: flex;
+    flex-direction: column;
     gap: 6px;
 }
 
