@@ -74,6 +74,7 @@ floatTools.addEventListener('pointermove', (e) => {
     floatTools.style.top = y + 'px';
     floatTools.style.right = 'auto';
     floatTools.style.bottom = 'auto';
+    floatTools.style.transform = 'none'; // default uses translateY(-50%); clear it once dragged
 });
 const endPanelDrag = () => { panelDragging = false; floatTools.classList.remove('dragging'); };
 floatTools.addEventListener('pointerup', endPanelDrag);

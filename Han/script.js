@@ -755,13 +755,60 @@ function filterCharacters(preferredChar = null) {
     displayCharacter(preferredIndex >= 0 ? preferredIndex : 0);
 }
 
+// ---- Pronunciation (made robust for iPad / iOS Safari) ----
+let cachedVoices = [];
+let speechPrimed = false;
+
+function refreshVoices() {
+    if ('speechSynthesis' in window) cachedVoices = window.speechSynthesis.getVoices() || [];
+}
+if ('speechSynthesis' in window) {
+    refreshVoices();
+    // voices load asynchronously on iOS — keep them up to date
+    window.speechSynthesis.addEventListener('voiceschanged', refreshVoices);
+}
+
+// pick a Chinese voice; without one iOS reads a Chinese char with an English
+// voice and stays silent
+function pickZhVoice() {
+    if (!cachedVoices.length) refreshVoices();
+    return cachedVoices.find((v) => /^zh/i.test(v.lang))
+        || cachedVoices.find((v) => /(chinese|mandarin|中文|普通话|国语|粤)/i.test(v.name))
+        || null;
+}
+
+// iOS only produces audible speech after a genuine user gesture — prime it on
+// the very first tap anywhere so the first "Pronounce" is heard.
+function primeSpeech() {
+    if (speechPrimed || !('speechSynthesis' in window)) return;
+    try {
+        const u = new SpeechSynthesisUtterance(' ');
+        u.volume = 0;
+        window.speechSynthesis.speak(u);
+    } catch (e) { /* ignore */ }
+    speechPrimed = true;
+}
+document.addEventListener('pointerdown', primeSpeech, { once: true });
+document.addEventListener('touchend', primeSpeech, { once: true });
+
 // 发音功能
 function speak(character) {
+    if (!('speechSynthesis' in window)) {
+        alert('Sorry, this browser does not support speech.');
+        return;
+    }
+    const synth = window.speechSynthesis;
+    if (synth.speaking || synth.pending) synth.cancel(); // clear a stuck queue
+
     const utterance = new SpeechSynthesisUtterance(character);
     utterance.lang = 'zh-CN';
     utterance.rate = 0.8;
-    window.speechSynthesis.speak(utterance);
-    
+    const voice = pickZhVoice();
+    if (voice) utterance.voice = voice;
+
+    synth.speak(utterance);
+    if (synth.paused) synth.resume(); // iOS can start paused
+
     // 按钮反馈
     playSound.style.transform = 'scale(0.95)';
     setTimeout(() => {
