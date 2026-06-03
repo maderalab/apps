@@ -825,25 +825,7 @@ function TennisScorer() {
       flexDirection: "column",
       minHeight: 0
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 11.5,
-      fontWeight: 800,
-      letterSpacing: 1.5,
-      color: C.muted,
-      textTransform: "uppercase",
-      marginBottom: 18,
-      flexShrink: 0
-    }
-  }, match ? "Live scoreboard" : /*#__PURE__*/React.createElement("span", {
-    style: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 5
-    }
-  }, /*#__PURE__*/React.createElement(Settings2, {
-    size: 12
-  }), " Configure your match")), match ? /*#__PURE__*/React.createElement(Scoreboard, {
+  }, match ? /*#__PURE__*/React.createElement(Scoreboard, {
     s: match,
     onPoint: point,
     onUndo: undo,

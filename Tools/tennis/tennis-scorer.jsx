@@ -476,10 +476,6 @@ export default function TennisScorer() {
       `}</style>
 
       <div style={{ maxWidth: 520, width: "100%", margin: "0 auto", flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
-        <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: 1.5, color: C.muted, textTransform: "uppercase", marginBottom: 18, flexShrink: 0 }}>
-          {match ? "Live scoreboard" : <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><Settings2 size={12} /> Configure your match</span>}
-        </div>
-
         {match
           ? <Scoreboard s={match} onPoint={point} onUndo={undo} onReset={reset} canUndo={history.length > 0} notice={ceNotice} />
           : <Setup onStart={start} />}
