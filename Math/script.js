@@ -158,14 +158,17 @@ class MathQuiz {
         document.getElementById('prevBtn').disabled = this.currentIndex === 0;
         document.getElementById('nextBtn').disabled = this.currentIndex === QUESTION_COUNT - 1;
 
-        // If already answered, disable input
+        // If already answered, lock input and hide the number pad
+        const numpad = document.getElementById('numpad');
         if (this.answers[this.currentIndex] !== null) {
             document.getElementById('answerInput').disabled = true;
             submitBtn.style.display = 'none';
+            numpad.classList.add('hidden');
             this.showFeedback();
         } else {
             document.getElementById('answerInput').disabled = false;
             submitBtn.style.display = 'block';
+            numpad.classList.remove('hidden');
         }
 
         // Update sidebar active state
@@ -173,9 +176,24 @@ class MathQuiz {
         recordItems.forEach((item, idx) => {
             item.classList.toggle('active', idx === this.currentIndex);
         });
+    }
 
-        // Focus input field
-        document.getElementById('answerInput').focus();
+    // Number-pad input handlers (no system keyboard)
+    pressDigit(d) {
+        if (this.answers[this.currentIndex] !== null) return;
+        const input = document.getElementById('answerInput');
+        if (input.value.length < 7) input.value += d;
+    }
+
+    pressBackspace() {
+        if (this.answers[this.currentIndex] !== null) return;
+        const input = document.getElementById('answerInput');
+        input.value = input.value.slice(0, -1);
+    }
+
+    pressClear() {
+        if (this.answers[this.currentIndex] !== null) return;
+        document.getElementById('answerInput').value = '';
     }
 
     // Submit answer
@@ -334,10 +352,21 @@ window.addEventListener('load', () => {
         quiz.submitAnswer();
     });
 
-    document.getElementById('answerInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !document.getElementById('submitBtn').disabled) {
-            quiz.submitAnswer();
-        }
+    // On-screen number pad — delegate clicks
+    document.getElementById('numpad').addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        if (btn.dataset.num !== undefined) quiz.pressDigit(btn.dataset.num);
+        else if (btn.dataset.action === 'clear') quiz.pressClear();
+        else if (btn.dataset.action === 'back') quiz.pressBackspace();
+    });
+
+    // Physical keyboard still works on desktop (input itself stays readonly)
+    document.addEventListener('keydown', (e) => {
+        if (document.getElementById('completionOverlay').style.display === 'flex') return;
+        if (e.key >= '0' && e.key <= '9') quiz.pressDigit(e.key);
+        else if (e.key === 'Backspace') { e.preventDefault(); quiz.pressBackspace(); }
+        else if (e.key === 'Enter' && !document.getElementById('submitBtn').disabled) quiz.submitAnswer();
     });
 
     document.getElementById('prevBtn').addEventListener('click', () => {

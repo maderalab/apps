@@ -178,6 +178,49 @@ header h1 {
 }
 
 #answerInput {
+    caret-color: transparent;   /* it's button-driven, no text cursor */
+}
+
+/* On-screen number pad — 3 columns */
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 72px);
+    gap: 10px;
+    justify-content: center;
+}
+
+.numpad.hidden {
+    display: none;
+}
+
+.num-btn {
+    height: 56px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    background: #f0f2f7;
+    border: 2px solid #e0e3ea;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.num-btn:hover {
+    background: #e4e8f5;
+    border-color: #667eea;
+}
+
+.num-btn:active {
+    transform: translateY(1px);
+}
+
+.num-btn.fn {
+    color: #667eea;
+    background: #eef0fb;
+}
+
+#answerInput {
     width: 150px;
     padding: 13px;
     font-size: 18px;
