@@ -108,13 +108,14 @@ header h1 {
     overflow: hidden;
 }
 
-/* 右侧列：题目(上) + 演算(下) */
+/* 右侧列：题目居中显示 */
 .work-column {
     flex: 1 1 340px;
     min-width: 0;
     min-height: 0;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 16px;
 }
 
@@ -130,35 +131,35 @@ header h1 {
 .question-card {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 20px;
     background: #fff;
     border: 1px solid #e8e8e8;
     border-radius: 10px;
-    padding: 14px 18px;
+    padding: 28px 24px;
 }
 
 .question-number {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: #fff;
     background: #667eea;
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 6px;
     flex: 0 0 auto;
 }
 
 .question-text {
-    flex: 1 1 200px;
+    width: 100%;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    padding: 14px 22px;
-    border-radius: 10px;
-    font-size: 30px;
+    padding: 36px 24px;
+    border-radius: 12px;
+    font-size: 52px;
     font-weight: bold;
     text-align: center;
     color: #333;
-    min-height: 60px;
+    min-height: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,8 +167,8 @@ header h1 {
 
 .question-text .operator {
     color: #667eea;
-    font-size: 34px;
-    margin: 0 10px;
+    font-size: 58px;
+    margin: 0 14px;
 }
 
 .answer-section {
@@ -275,9 +276,9 @@ header h1 {
     cursor: not-allowed;
 }
 
-/* 侧栏：答题记录，4 列 × 25 行 */
+/* 侧栏：答题记录，5 列 × 20 行 */
 .sidebar {
-    width: 218px;
+    width: 240px;
     flex-shrink: 0;
     background: #f8f9fa;
     padding: 16px;
@@ -287,17 +288,10 @@ header h1 {
     min-height: 0;
 }
 
-.sidebar h3 {
-    margin-bottom: 12px;
-    color: #333;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
 /* 记录区自带滚动条，不会把页面撑高 */
 .record-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 5px;
     flex: 1 1 auto;
     min-height: 0;
@@ -337,96 +331,6 @@ header h1 {
     border-color: #4a3aff;
     transform: scale(1.08);
     box-shadow: 0 2px 8px rgba(74, 58, 255, 0.35);
-}
-
-.record-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 12px;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #e0e0e0;
-    font-size: 12px;
-    color: #666;
-    flex-shrink: 0;
-}
-
-.record-legend span {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.record-legend .dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    display: inline-block;
-}
-
-.record-legend .dot.correct { background: #2ecc71; }
-.record-legend .dot.incorrect { background: #e74c3c; }
-.record-legend .dot.pending { background: #e9ecef; border: 1px solid #ced4da; }
-
-/* 手写演算区：放在题目下方，撑满剩余高度 */
-.scratch-area {
-    position: relative;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 12px;
-    min-height: 0;
-}
-
-/* 工具栏浮在画布右侧中间，竖直排列 */
-.scratch-tools {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.tool-btn {
-    width: 38px;
-    height: 34px;
-    font-size: 16px;
-    line-height: 1;
-    background: #fff;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.tool-btn:hover {
-    border-color: #667eea;
-}
-
-.tool-btn.active {
-    background: #667eea;
-    border-color: #667eea;
-}
-
-#scratchCanvas {
-    flex: 1;
-    width: 100%;
-    min-height: 160px;
-    border-radius: 8px;
-    border: 2px solid #e0e0e0;
-    background-color: #fff;
-    /* faint grid so it feels like graph paper */
-    background-image:
-        linear-gradient(#eef2f7 1px, transparent 1px),
-        linear-gradient(90deg, #eef2f7 1px, transparent 1px);
-    background-size: 24px 24px;
-    touch-action: none;
-    cursor: crosshair;
 }
 
 /* 完成界面 */
@@ -533,10 +437,6 @@ header h1 {
         grid-template-columns: repeat(10, 1fr);
         flex: none;
         max-height: 200px;
-    }
-
-    .scratch-area {
-        min-height: 340px;
     }
 
     .question-text {

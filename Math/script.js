@@ -1,14 +1,60 @@
 // Math Quiz - Question Generation and State Management
 const QUESTION_COUNT = 100;
+const STORAGE_KEY = 'mathQuizProgress';
 
 class MathQuiz {
     constructor() {
-        this.questions = [];
         this.currentIndex = 0;
-        this.answers = new Array(QUESTION_COUNT).fill(null);
-        this.correct = new Array(QUESTION_COUNT).fill(false);
-        this.generateQuestions();
+        // Resume today's saved progress; otherwise start a fresh daily set.
+        if (!this.loadProgress()) {
+            this.questions = [];
+            this.answers = new Array(QUESTION_COUNT).fill(null);
+            this.correct = new Array(QUESTION_COUNT).fill(false);
+            this.generateQuestions();
+            this.saveProgress();
+        }
         this.init();
+    }
+
+    // Local date as YYYY-MM-DD — the cache key for "today"
+    todayKey() {
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
+    // Restore progress if it belongs to today; returns true on success.
+    loadProgress() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return false;
+            const data = JSON.parse(raw);
+            // A new day ⇒ discard and regenerate a brand-new question set.
+            if (!data || data.date !== this.todayKey()) return false;
+            if (!Array.isArray(data.questions) || data.questions.length !== QUESTION_COUNT) return false;
+            this.questions = data.questions;
+            this.answers = data.answers;
+            this.correct = data.correct;
+            this.currentIndex = data.currentIndex || 0;
+            return true;
+        } catch (e) {
+            return false; // corrupted / unavailable storage → fresh start
+        }
+    }
+
+    // Persist the full state so a reload resumes seamlessly.
+    saveProgress() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                date: this.todayKey(),
+                questions: this.questions,
+                answers: this.answers,
+                correct: this.correct,
+                currentIndex: this.currentIndex
+            }));
+        } catch (e) { /* ignore quota / private-mode errors */ }
     }
 
     // Generate random questions
@@ -149,6 +195,7 @@ class MathQuiz {
         this.renderQuestion();
         this.updateStats();
         this.renderRecordList();
+        this.saveProgress();
 
         // Check if all questions are answered
         if (this.answers.every(a => a !== null)) {
@@ -212,6 +259,7 @@ class MathQuiz {
                 this.renderQuestion();
                 this.updateStats();
                 this.renderRecordList();
+                this.saveProgress();
                 item.scrollIntoView({ block: 'nearest' });
             });
 
@@ -226,6 +274,7 @@ class MathQuiz {
             this.renderQuestion();
             this.updateStats();
             this.renderRecordList();
+            this.saveProgress();
         }
     }
 
@@ -236,6 +285,7 @@ class MathQuiz {
             this.renderQuestion();
             this.updateStats();
             this.renderRecordList();
+            this.saveProgress();
         }
     }
 
@@ -258,13 +308,14 @@ class MathQuiz {
         document.getElementById('completionOverlay').style.display = 'flex';
     }
 
-    // Restart
+    // Restart — manual force-refresh with a brand-new question set
     restart() {
         this.questions = [];
         this.currentIndex = 0;
         this.answers = new Array(QUESTION_COUNT).fill(null);
         this.correct = new Array(QUESTION_COUNT).fill(false);
         this.generateQuestions();
+        this.saveProgress();
         this.renderQuestion();
         this.updateStats();
         this.renderRecordList();
@@ -272,96 +323,11 @@ class MathQuiz {
     }
 }
 
-// Handwriting scratchpad — draw your working out with mouse / touch / stylus
-function setupScratchpad() {
-    const canvas = document.getElementById('scratchCanvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let mode = 'pen';
-    let drawing = false;
-    let last = null;
-
-    // Size the backing store to the displayed size (handles high-DPI), keeping
-    // whatever is already drawn.
-    function fitCanvas() {
-        const rect = canvas.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-        const dpr = window.devicePixelRatio || 1;
-        const prevW = canvas.width, prevH = canvas.height;
-        let snapshot = null;
-        if (prevW && prevH) {
-            snapshot = document.createElement('canvas');
-            snapshot.width = prevW; snapshot.height = prevH;
-            snapshot.getContext('2d').drawImage(canvas, 0, 0);
-        }
-        canvas.width = Math.round(rect.width * dpr);
-        canvas.height = Math.round(rect.height * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        if (snapshot) ctx.drawImage(snapshot, 0, 0, rect.width, rect.height);
-    }
-
-    function posOf(e) {
-        const rect = canvas.getBoundingClientRect();
-        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    }
-
-    function stroke(a, b) {
-        ctx.globalCompositeOperation = mode === 'eraser' ? 'destination-out' : 'source-over';
-        ctx.strokeStyle = '#1a2b4a';
-        ctx.lineWidth = mode === 'eraser' ? 22 : 2.6;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
-    }
-
-    canvas.addEventListener('pointerdown', (e) => {
-        drawing = true;
-        canvas.setPointerCapture(e.pointerId);
-        last = posOf(e);
-        stroke(last, last); // a tap leaves a dot
-    });
-    canvas.addEventListener('pointermove', (e) => {
-        if (!drawing) return;
-        const p = posOf(e);
-        stroke(last, p);
-        last = p;
-    });
-    const stop = () => { drawing = false; };
-    canvas.addEventListener('pointerup', stop);
-    canvas.addEventListener('pointercancel', stop);
-    canvas.addEventListener('pointerleave', stop);
-
-    function clearCanvas() {
-        ctx.save();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.restore();
-    }
-
-    const penBtn = document.getElementById('penBtn');
-    const eraserBtn = document.getElementById('eraserBtn');
-    function setMode(m) {
-        mode = m;
-        penBtn.classList.toggle('active', m === 'pen');
-        eraserBtn.classList.toggle('active', m === 'eraser');
-    }
-    penBtn.addEventListener('click', () => setMode('pen'));
-    eraserBtn.addEventListener('click', () => setMode('eraser'));
-    document.getElementById('clearCanvasBtn').addEventListener('click', clearCanvas);
-
-    window.addEventListener('resize', fitCanvas);
-    fitCanvas();
-}
-
 // Initialize
 let quiz;
 
 window.addEventListener('load', () => {
     quiz = new MathQuiz();
-    setupScratchpad();
 
     // Event listeners
     document.getElementById('submitBtn').addEventListener('click', () => {
