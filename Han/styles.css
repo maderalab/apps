@@ -230,14 +230,48 @@ header h1 {
     border-left: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.meaning, .example {
-    margin-bottom: 8px;
-    color: #333;
-    line-height: 1.6;
+/* 组词 / 造句 行 */
+.vocab-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
-.example:last-child {
+.vocab-row:last-child {
     margin-bottom: 0;
+}
+
+.vocab-row .label {
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 3px;
+}
+
+.vocab-text {
+    flex: 1;
+    min-width: 0;
+    color: #333;
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.mini-play {
+    flex-shrink: 0;
+    width: 30px;
+    height: 28px;
+    font-size: 14px;
+    line-height: 1;
+    background: #fff;
+    border: 1px solid #d8defa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mini-play:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
 }
 
 /* 笔画顺序练习区 */
@@ -321,19 +355,21 @@ header h1 {
 .stroke-order-step {
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    /* glyph hugs the bottom-right so the top-left corner stays free for the number */
+    align-items: flex-end;
+    justify-content: flex-end;
     aspect-ratio: 1;
     min-width: 0;
     overflow: hidden;
     border-radius: 5px;
     border: 1px solid #d8defa;
     background: #fbfcff;
+    padding: 3px;
 }
 
 .stroke-order-step svg {
-    width: 86%;
-    height: 86%;
+    width: 78%;
+    height: 78%;
 }
 
 .stroke-order-step path {
@@ -350,19 +386,20 @@ header h1 {
 
 .stroke-order-number {
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 3px;
+    left: 3px;
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     background: #667eea;
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
+    box-shadow: 0 0 0 1.5px #fbfcff; /* white ring keeps it readable over any stroke */
 }
 
 .stroke-order-step.fallback {

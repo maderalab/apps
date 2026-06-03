@@ -402,6 +402,25 @@ const characterDatabase = [...COMMON_1000_CHARS].map((char, index) => {
     };
 });
 
+// ---- Chinese vocabulary: 组词 (words) + 造句 (sentence) ----
+// Shared pools of real common words/sentences, matched by character, so most
+// common characters get genuine Chinese (with a safe fallback for the rest).
+const WORD_POOL = ['你好', '我们', '你们', '他们', '大家', '自己', '中国', '中文', '文化', '学生', '学习', '学校', '同学', '老师', '朋友', '大学', '上学', '时间', '现在', '今天', '明天', '昨天', '星期', '每天', '早上', '中午', '晚上', '上午', '下午', '喜欢', '谢谢', '客气', '对不起', '没关系', '知道', '觉得', '因为', '所以', '但是', '可是', '如果', '还是', '或者', '这里', '那里', '哪里', '这个', '那个', '哪个', '什么', '怎么', '为什么', '多少', '一些', '东西', '工作', '上班', '下班', '公司', '电话', '电脑', '电视', '电影', '手机', '网络', '上网', '音乐', '唱歌', '跳舞', '画画', '读书', '看书', '写字', '名字', '汉字', '说话', '普通话', '问题', '回答', '介绍', '帮助', '高兴', '快乐', '开心', '漂亮', '可爱', '聪明', '努力', '认真', '干净', '安静', '容易', '重要', '简单', '方便', '便宜', '健康', '身体', '头发', '眼睛', '鼻子', '嘴巴', '衣服', '鞋子', '颜色', '红色', '白色', '黑色', '蓝色', '绿色', '黄色', '天气', '下雨', '下雪', '刮风', '太阳', '月亮', '星星', '春天', '夏天', '秋天', '冬天', '国家', '北京', '城市', '地方', '房间', '房子', '飞机', '火车', '汽车', '自行车', '机场', '车站', '银行', '医院', '商店', '饭店', '公园', '图书馆', '教室', '宿舍', '厨房', '客厅', '米饭', '面条', '包子', '饺子', '鸡蛋', '牛奶', '面包', '苹果', '香蕉', '西瓜', '水果', '蔬菜', '咖啡', '啤酒', '早饭', '午饭', '晚饭', '吃饭', '喝水', '做饭', '父亲', '母亲', '爸爸', '妈妈', '哥哥', '姐姐', '弟弟', '妹妹', '儿子', '女儿', '孩子', '爷爷', '奶奶', '家人', '男人', '女人', '男孩', '女孩', '一起', '一定', '一样', '一点', '加油', '旅游', '旅行', '运动', '跑步', '游泳', '打球', '篮球', '足球', '睡觉', '起床', '洗手', '刷牙', '满意', '希望', '决定', '准备', '开始', '结束', '完成', '成功', '关系', '经济', '政府', '历史', '科学', '数学', '语文', '英语', '老板', '司机', '警察', '医生', '护士', '工人', '农民', '记者', '演员', '经理', '主席', '比赛', '节目', '新闻', '故事', '小说', '报纸', '杂志', '词典', '课本', '作业', '考试', '成绩', '分数', '题目', '答案', '练习', '复习', '上课', '下课', '世界', '生活', '工程', '建设', '发展', '社会', '人民', '问好', '回家', '出门'];
+
+const SENTENCE_POOL = ['我是中国人。', '你好吗？', '我很好，谢谢你。', '今天天气很好。', '我喜欢学习中文。', '他是我的好朋友。', '我们一起去学校。', '这是我的老师。', '你叫什么名字？', '我每天都很忙。', '明天我要去北京。', '妈妈在家里做饭。', '我想喝一杯水。', '他正在看书。', '这本书很有意思。', '小猫在睡觉。', '请你帮我一下。', '我不知道这个字怎么写。', '今天是星期一。', '我爱我的家人。', '弟弟在画画。', '姐姐喜欢唱歌。', '爸爸去上班了。', '外面下雨了。', '天上有很多星星。', '我会写自己的名字。', '老师在教我们写字。', '这个问题很简单。', '我有一个问题。', '请大家安静。', '现在几点了？', '我饿了，想吃饭。', '这件衣服很漂亮。', '他跑得很快。', '我喜欢看电影。', '公园里有很多人。', '火车快要开了。', '我用电脑工作。', '孩子们在玩游戏。', '今天我很高兴。', '请你慢慢说。', '这是什么意思？', '我们坐车去吧。', '他的中文说得很好。', '太阳出来了。', '我想买一本书。', '学校离我家很近。', '他在听音乐。', '我们一起加油吧。', '妹妹喜欢吃苹果。', '春天来了，花开了。', '哥哥在打篮球。', '我每天都要喝牛奶。', '这个城市很大。', '我的朋友很多。', '老师说我写得很好。', '我们是好朋友。', '请问，洗手间在哪里？', '时间过得真快。', '我想去旅游。'];
+
+function wordsFor(ch) {
+    const hits = [];
+    for (const w of WORD_POOL) {
+        if (w.includes(ch)) { hits.push(w); if (hits.length >= 4) break; }
+    }
+    return hits.length ? hits : [ch];
+}
+
+function sentenceFor(ch) {
+    return SENTENCE_POOL.find((s) => s.includes(ch)) || `这个字是「${ch}」。`;
+}
+
 function resolveCategory(char, rank) {
     const matchedCategory = CATEGORY_DEFINITIONS.find((category) => category.chars?.includes(char));
     if (matchedCategory) return matchedCategory;
@@ -421,8 +440,8 @@ const sidebarSummary = document.getElementById('sidebarSummary');
 const mainCharacter = document.getElementById('mainCharacter');
 const pinyinDisplay = document.getElementById('pinyinDisplay');
 const strokeCount = document.getElementById('strokeCount');
-const meaning = document.getElementById('meaning');
-const example = document.getElementById('example');
+const wordsEl = document.getElementById('words');
+const sentenceEl = document.getElementById('sentence');
 const playSound = document.getElementById('playSound');
 const practiceCanvas = document.getElementById('practiceCanvas');
 const ctx = practiceCanvas.getContext('2d');
@@ -589,8 +608,8 @@ function displayCharacter(index) {
         mainCharacter.textContent = '-';
         pinyinDisplay.textContent = 'No match';
         strokeCount.textContent = '-';
-        meaning.textContent = 'No characters match the current filters.';
-        example.textContent = 'Try another pathway.';
+        wordsEl.textContent = '—';
+        sentenceEl.textContent = '没有匹配的汉字。';
         orderStrokeCount.textContent = '-';
         strokeOrderSteps.innerHTML = '';
         clearCanvas();
@@ -606,8 +625,8 @@ function displayCharacter(index) {
     mainCharacter.textContent = char.char;
     pinyinDisplay.textContent = char.pinyin || `Rank #${char.rank}`;
     strokeCount.textContent = char.strokes || '...';
-    meaning.textContent = char.meaning;
-    example.textContent = char.example;
+    wordsEl.textContent = wordsFor(char.char).join('、');
+    sentenceEl.textContent = sentenceFor(char.char);
     renderStrokeOrder(char);
     
     clearCanvas();
@@ -703,6 +722,15 @@ function setupEventListeners() {
     playSound.addEventListener('click', () => {
         const char = filteredCharacters[currentIndex];
         if (char) speak(char.char);
+    });
+
+    // 组词 / 造句 pronunciation
+    document.querySelectorAll('.mini-play').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const el = document.getElementById(btn.dataset.target);
+            const text = el && el.textContent.trim();
+            if (text && text !== '—') speak(text);
+        });
     });
 
     // Brush Size
