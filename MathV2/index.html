@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice - 100 Questions</title>
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#667eea">
+    <!-- KaTeX — high-precision math typesetting (bundled locally for offline use) -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css">
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Math Practice</h1>
+            <!-- Level switch: 9 curriculum stages as colored dots; active dot
+                 grows into a pill with the level name (set in updateModeUI) -->
+            <div class="mode-tabs" id="modeTabs">
+                <button class="mode-tab active" data-mode="early" title="Early Math"></button>
+                <button class="mode-tab" data-mode="basics" title="Basic"></button>
+                <button class="mode-tab" data-mode="advanced" title="Advanced"></button>
+                <button class="mode-tab" data-mode="ratios" title="Ratios"></button>
+                <button class="mode-tab" data-mode="linear" title="Pre-Algebra"></button>
+                <button class="mode-tab" data-mode="algebra1" title="Algebra I"></button>
+                <button class="mode-tab" data-mode="geometry" title="Geometry"></button>
+                <button class="mode-tab" data-mode="algebra2" title="Algebra II"></button>
+                <button class="mode-tab" data-mode="precalc" title="Precalculus"></button>
+                <button class="mode-tab" data-mode="calculus" title="Calculus"></button>
+            </div>
+            <!-- Score + Restart, top-right -->
+            <div class="header-stats">
+                <span class="hscore">Score <b id="score">0</b> / 100</span>
+                <button id="resetBtn" class="reset-btn">🔄 Restart</button>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Sidebar: Answer Record (left, 5 x 20 grid) -->
+            <div class="sidebar">
+                <div class="record-list" id="recordList">
+                    <!-- Answer records will be dynamically generated -->
+                </div>
+            </div>
+
+            <!-- Right column: question bar on top, scratchpad below -->
+            <div class="work-column">
+                <!-- Questions Area (horizontal bar) -->
+                <div class="question-area">
+                    <div class="question-card">
+                        <div class="question-number">Q<span id="questionNum">1</span></div>
+                        <div class="question-text" id="questionText">
+                            <!-- Questions will be dynamically generated -->
+                        </div>
+
+                        <div class="answer-section">
+                            <input type="text" id="answerInput" placeholder="Answer" readonly inputmode="none" autocomplete="off">
+                            <button id="submitBtn" class="submit-btn">Submit</button>
+                        </div>
+
+                        <!-- On-screen number pad (no system keyboard) -->
+                        <div class="numpad" id="numpad">
+                            <button class="num-btn" data-num="7">7</button>
+                            <button class="num-btn" data-num="8">8</button>
+                            <button class="num-btn" data-num="9">9</button>
+                            <button class="num-btn" data-num="4">4</button>
+                            <button class="num-btn" data-num="5">5</button>
+                            <button class="num-btn" data-num="6">6</button>
+                            <button class="num-btn" data-num="1">1</button>
+                            <button class="num-btn" data-num="2">2</button>
+                            <button class="num-btn" data-num="3">3</button>
+                            <button class="num-btn fn" data-action="clear">C</button>
+                            <button class="num-btn" data-num="0">0</button>
+                            <button class="num-btn fn" data-action="back">⌫</button>
+                            <!-- Extended keys — shown per level (negative / decimal / fraction) -->
+                            <button class="num-btn fn k-neg" data-action="neg">±</button>
+                            <button class="num-btn fn k-dot" data-action="dot">.</button>
+                            <button class="num-btn fn k-frac" data-action="frac">/</button>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="navigation-buttons">
+                            <button id="prevBtn" class="nav-btn" disabled>← Prev</button>
+                            <button id="nextBtn" class="nav-btn">Next →</button>
+                        </div>
+
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion Screen -->
+        <div class="completion-overlay" id="completionOverlay" style="display: none;">
+            <div class="completion-card">
+                <h2>🎉 All Questions Complete!</h2>
+                <div class="final-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Score:</span>
+                        <span class="stat-value" id="finalScore">0</span> / 100
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Accuracy:</span>
+                        <span class="stat-value" id="finalAccuracy">0%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Grade:</span>
+                        <span class="stat-value grade" id="finalGrade">Excellent</span>
+                    </div>
+                </div>
+                <button id="restartBtn" class="restart-btn">Start New Round</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
