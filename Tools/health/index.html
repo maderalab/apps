@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <title>Health · Tools</title>
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#667eea">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="phone">
+        <header>
+            <a class="back-btn" href="../index.html" title="Back">‹</a>
+            <h1>Health</h1>
+            <span class="header-spacer"></span>
+            <div class="profile-wrap">
+                <button class="profile-btn" id="profileBtn" title="Switch profile">
+                    <span class="profile-avatar" id="profileAvatar">M</span>
+                    <span class="profile-name" id="profileName">Me</span>
+                    <span class="caret">▾</span>
+                </button>
+                <div class="profile-menu" id="profileMenu" hidden>
+                    <ul class="profile-list" id="profileList"></ul>
+                    <div class="profile-edit" id="profileEdit" hidden>
+                        <input type="text" id="profileNameInput" placeholder="Profile name" maxlength="24" autocomplete="off">
+                        <span class="profile-confirm-msg" id="profileConfirmMsg" hidden></span>
+                        <button type="button" class="pe-btn ok" id="profileEditOk" title="Confirm">✓</button>
+                        <button type="button" class="pe-btn cancel" id="profileEditCancel" title="Cancel">✕</button>
+                    </div>
+                    <div class="profile-actions">
+                        <button type="button" class="pa-btn" data-act="new" title="New profile" aria-label="New profile">＋</button>
+                        <button type="button" class="pa-btn" data-act="rename" title="Rename profile" aria-label="Rename profile">✎</button>
+                        <button type="button" class="pa-btn" data-act="delete" title="Delete profile" aria-label="Delete profile">🗑</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Morning entry form -->
+            <section class="card form-card">
+                <div class="card-title">
+                    <span>Morning check-in</span>
+                    <span class="badge" id="formBadge">Today</span>
+                </div>
+
+                <label class="field">
+                    <span class="field-label">Date</span>
+                    <input type="date" id="fDate">
+                </label>
+
+                <div class="field-row">
+                    <label class="field">
+                        <span class="field-label">Systolic <em>(high)</em></span>
+                        <input type="number" id="fSys" inputmode="numeric" placeholder="120" min="40" max="300">
+                        <span class="unit">mmHg</span>
+                    </label>
+                    <label class="field">
+                        <span class="field-label">Diastolic <em>(low)</em></span>
+                        <input type="number" id="fDia" inputmode="numeric" placeholder="80" min="20" max="200">
+                        <span class="unit">mmHg</span>
+                    </label>
+                </div>
+
+                <div class="field-row">
+                    <label class="field">
+                        <span class="field-label">Height</span>
+                        <input type="number" id="fHeight" inputmode="decimal" placeholder="170" min="80" max="250" step="0.1">
+                        <span class="unit">cm</span>
+                    </label>
+                    <div class="field">
+                        <span class="field-label">
+                            Weight
+                            <span class="unit-toggle" id="unitToggle">
+                                <button type="button" data-unit="kg" class="active">kg</button>
+                                <button type="button" data-unit="lb">lb</button>
+                            </span>
+                        </span>
+                        <input type="number" id="fWeight" inputmode="decimal" placeholder="68.0" min="0" max="900" step="0.1">
+                        <span class="unit" id="weightUnit">kg</span>
+                    </div>
+                </div>
+
+                <p class="form-msg" id="formMsg"></p>
+                <button class="save-btn" id="saveBtn">Save check-in</button>
+            </section>
+
+            <!-- Latest snapshot -->
+            <section class="card snapshot" id="snapshot" hidden>
+                <div class="card-title"><span>Latest</span><span class="snapshot-date" id="snapDate"></span></div>
+                <div class="metric-grid">
+                    <div class="metric">
+                        <span class="metric-icon">🩸</span>
+                        <span class="metric-value" id="mBp">—</span>
+                        <span class="metric-label">Blood pressure</span>
+                        <span class="metric-tag" id="mBpTag"></span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-icon">⚖️</span>
+                        <span class="metric-value" id="mWeight">—</span>
+                        <span class="metric-label">Weight</span>
+                        <span class="metric-tag"></span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-icon">📏</span>
+                        <span class="metric-value" id="mHeight">—</span>
+                        <span class="metric-label">Height</span>
+                        <span class="metric-tag"></span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-icon">📊</span>
+                        <span class="metric-value" id="mBmi">—</span>
+                        <span class="metric-label">BMI</span>
+                        <span class="metric-tag" id="mBmiTag"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 30-day trends -->
+            <section class="card trends-card" id="trends" hidden>
+                <div class="card-title"><span>Last 30 days</span></div>
+
+                <div class="chart-block">
+                    <div class="chart-head">
+                        <span class="chart-title">🩸 Blood pressure</span>
+                        <span class="chart-legend"><i class="dot-sys"></i>Sys <i class="dot-dia"></i>Dia</span>
+                    </div>
+                    <div class="chart-svg" id="chartBp"></div>
+                </div>
+
+                <div class="chart-block">
+                    <div class="chart-head">
+                        <span class="chart-title">⚖️ Weight</span>
+                        <span class="chart-now" id="chartWeightNow"></span>
+                    </div>
+                    <div class="chart-svg" id="chartWeight"></div>
+                </div>
+
+                <div class="chart-block">
+                    <div class="chart-head">
+                        <span class="chart-title">📊 BMI</span>
+                        <span class="chart-now" id="chartBmiNow"></span>
+                    </div>
+                    <div class="chart-svg" id="chartBmi"></div>
+                </div>
+            </section>
+
+            <!-- History -->
+            <section class="card history-card">
+                <div class="card-title">
+                    <span>History</span>
+                    <span class="history-tools">
+                        <button class="link-btn" id="exportBtn">Export</button>
+                        <button class="link-btn" id="importBtn">Import</button>
+                        <button class="link-btn danger" id="clearBtn" hidden>Clear all</button>
+                    </span>
+                </div>
+                <input type="file" id="importFile" accept=".csv,text/csv" hidden>
+                <ul class="history" id="history"></ul>
+                <p class="empty" id="emptyMsg">No check-ins yet. Record your first one above.</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -12,13 +12,17 @@ Tools/
 │   ├── index.html
 │   ├── styles.css
 │   └── script.js
-└── tennis/           # Tool 2 — React scorer
-    ├── tennis-scorer.jsx   # SOURCE (the core module)
-    ├── tennis-scorer.js    # compiled from the .jsx (loaded by the page)
-    ├── icons.js            # inline-SVG shims for the lucide icons used
-    ├── index.html          # entry point — mounts the React component
+├── tennis/           # Tool 2 — React scorer
+│   ├── tennis-scorer.jsx   # SOURCE (the core module)
+│   ├── tennis-scorer.js    # compiled from the .jsx (loaded by the page)
+│   ├── icons.js            # inline-SVG shims for the lucide icons used
+│   ├── index.html          # entry point — mounts the React component
+│   ├── styles.css
+│   └── vendor/             # React + ReactDOM (UMD, bundled locally)
+└── health/           # Tool 3 — morning check-in tracker
+    ├── index.html
     ├── styles.css
-    └── vendor/             # React + ReactDOM (UMD, bundled locally)
+    └── script.js
 ```
 
 Each tool is a **standalone page** in its own sub-folder. The launcher (`Tools/index.html`) just links to `calculator/index.html`, `tennis/index.html`, etc. To add / replace a tool, drop a self-contained page into its folder — keep `index.html` as the entry, and a back link to `../index.html` so the launcher flow stays intact.
@@ -31,6 +35,7 @@ Each tool is a **standalone page** in its own sub-folder. The launcher (`Tools/i
   - **Set format**: Regular 6 · Advantage Set (no tiebreak) · Pro Set (8) · Fast4 · Super Tiebreak (10)
   - **Game scoring**: AD · No-AD
   - **Deciding set**: Standard · 10-pt tiebreak at 6–6 (modern Grand Slam / pro) · Match Tiebreak (10) (junior "third-set TB10" / doubles)
+- ❤️ **Health** — a morning check-in log (vanilla JS, no build). Record **blood pressure** (systolic/diastolic) and **weight** per day, enter your **height** (defaults to the last recorded value, so it carries forward day to day), and it computes **BMI** for every entry. Weight can be entered/shown in **kg or lb** (toggle next to the field — switching converts what you've typed and all stored values display in the chosen unit). BP and BMI are auto-classified (BP per ACC/AHA; BMI Underweight→Obese). **Multiple profiles** (e.g. family members) are supported via the header switcher — each profile keeps its own check-ins and unit preference, stored separately. **30-day trend charts** (inline SVG sparklines) plot blood pressure, weight and BMI. Data can be **exported / imported as CSV** (`date,systolic,diastolic,weight_<unit>,height_cm`) — import merges by date (same-date rows overwrite). Entries are keyed by date (one per day — re-saving a date edits it) and persisted in `localStorage`, so data stays on the device across reloads and restarts until cleared. Latest values show as a snapshot; full history below with per-day delete and a "Clear all".
 
 #### Common formats it covers
 
