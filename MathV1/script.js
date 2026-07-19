@@ -285,6 +285,68 @@ class MathQuiz {
         }
     }
 
+    // Build a clean worksheet from the current question set, then open print/PDF.
+    printWorksheet() {
+        this.renderPrintSheet();
+        window.print();
+    }
+
+    renderPrintSheet() {
+        const printSheet = document.getElementById('printSheet');
+        const generatedOn = new Date().toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+
+        printSheet.innerHTML = '';
+
+        for (let pageIndex = 0; pageIndex < 2; pageIndex++) {
+            const page = document.createElement('div');
+            page.className = 'print-page';
+
+            const header = document.createElement('div');
+            header.className = 'print-header';
+            header.innerHTML = `
+                <div>
+                    <h1>Math Practice Worksheet</h1>
+                    <p>100 questions · Page ${pageIndex + 1} of 2 · Generated ${generatedOn}</p>
+                </div>
+                <div class="print-student-fields">
+                    <span>Name:</span>
+                    <span>Date:</span>
+                    <span>Score:</span>
+                </div>
+            `;
+
+            const grid = document.createElement('div');
+            grid.className = 'print-question-grid';
+
+            this.questions.slice(pageIndex * 50, pageIndex * 50 + 50).forEach((question, offset) => {
+                const index = pageIndex * 50 + offset;
+                const item = document.createElement('div');
+                item.className = 'print-question';
+
+                const number = document.createElement('span');
+                number.className = 'print-question-number';
+                number.textContent = `${index + 1}.`;
+
+                const text = document.createElement('span');
+                text.className = 'print-question-text';
+                text.textContent = question.question;
+
+                const line = document.createElement('span');
+                line.className = 'print-answer-line';
+
+                item.append(number, text, line);
+                grid.appendChild(item);
+            });
+
+            page.append(header, grid);
+            printSheet.appendChild(page);
+        }
+    }
+
     // Previous question
     previousQuestion() {
         if (this.currentIndex > 0) {
@@ -381,6 +443,14 @@ window.addEventListener('load', () => {
         if (confirm('Are you sure you want to restart?')) {
             quiz.restart();
         }
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+        quiz.printWorksheet();
+    });
+
+    window.addEventListener('beforeprint', () => {
+        quiz.renderPrintSheet();
     });
 
     document.getElementById('restartBtn').addEventListener('click', () => {

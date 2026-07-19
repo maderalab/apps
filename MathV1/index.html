@@ -17,6 +17,7 @@
             <!-- Score + Restart, top-right -->
             <div class="header-stats">
                 <span class="hscore">Score <b id="score">0</b> / 100</span>
+                <button id="printBtn" class="header-btn">Print PDF</button>
                 <button id="resetBtn" class="reset-btn">🔄 Restart</button>
             </div>
         </header>
@@ -100,6 +101,10 @@
             </div>
         </div>
     </div>
+
+    <section class="print-sheet" id="printSheet" aria-hidden="true">
+        <!-- Printable worksheet will be generated from the current question set -->
+    </section>
 
     <script src="script.js"></script>
 </body>

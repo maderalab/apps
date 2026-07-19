@@ -9,6 +9,7 @@ A random math practice quiz generator with 100 questions each session, covering 
 - **📈 Real-time Statistics** - Shows score, accuracy rate, and progress
 - **✍️ Instant Feedback** - Displays correct/incorrect feedback immediately upon submission
 - **📝 Answer Records** - Sidebar displays answer status for all questions
+- **🖨️ Printable PDF Worksheet** - Generate a clean print layout from the current 100-question set
 - **🏆 Final Grading** - Shows final score and performance rating
 - **⌨️ Quick Input** - Supports Enter key for quick submission
 - **🔄 Restart Anytime** - Support restarting a new round of practice
@@ -52,6 +53,11 @@ A random math practice quiz generator with 100 questions each session, covering 
    - **Next** - Jump to the next question
    - **Record Sidebar** - Click any question number to jump directly to that question
 
+4. **Print / PDF**
+   - Click **Print PDF** in the top bar
+   - In the browser print dialog, choose your printer or select **Save as PDF**
+   - The printed worksheet uses the current question set and leaves answer lines blank
+
 ### Statistics Panel
 
 At the top statistics bar, you can see:
@@ -59,6 +65,7 @@ At the top statistics bar, you can see:
 - **Score** - Number of correct answers (e.g., 15/100)
 - **Accuracy** - Answer accuracy percentage (e.g., 85%)
 - **Restart** - Start a new round immediately
+- **Print PDF** - Create a printable worksheet from the current round
 
 ### Record Sidebar
 
