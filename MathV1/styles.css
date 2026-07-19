@@ -661,7 +661,7 @@ header h1 {
         break-inside: avoid;
         page-break-inside: avoid;
         display: grid;
-        grid-template-columns: 8mm max-content 25mm;
+        grid-template-columns: 8mm max-content max-content 25mm;
         align-items: end;
         column-gap: 1mm;
         min-height: 7mm;
@@ -676,6 +676,10 @@ header h1 {
 
     .print-question-text {
         white-space: nowrap;
+    }
+
+    .print-equals {
+        font-weight: 700;
     }
 
     .print-answer-line {

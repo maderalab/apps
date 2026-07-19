@@ -335,10 +335,14 @@ class MathQuiz {
                 text.className = 'print-question-text';
                 text.textContent = question.question;
 
+                const equals = document.createElement('span');
+                equals.className = 'print-equals';
+                equals.textContent = '=';
+
                 const line = document.createElement('span');
                 line.className = 'print-answer-line';
 
-                item.append(number, text, line);
+                item.append(number, text, equals, line);
                 grid.appendChild(item);
             });
 
